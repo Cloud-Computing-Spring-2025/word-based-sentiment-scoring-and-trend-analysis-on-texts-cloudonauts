@@ -14,7 +14,7 @@ public class PreprocessReducer extends Reducer<Text, Text, Text, Text> {
         }
 
         // Fix: Ensure correct delimiter between fields
-        String output = key.toString() + "|" + cleanedText.toString().trim();
+        String output = key.toString() + "," + cleanedText.toString().trim();
         context.write(new Text(output), null);
     }
 }

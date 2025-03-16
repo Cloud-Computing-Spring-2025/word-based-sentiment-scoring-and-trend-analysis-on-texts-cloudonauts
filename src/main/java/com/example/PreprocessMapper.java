@@ -42,7 +42,7 @@ public class PreprocessMapper extends Mapper<LongWritable, Text, Text, Text> {
                 }
             }
 
-            context.write(new Text(bookID + "|" + title + "|" + year), new Text(cleanedText.toString().trim()));
+            context.write(new Text(bookID + "," + title + "." + year), new Text(cleanedText.toString().trim()));
         }
     }
 }
