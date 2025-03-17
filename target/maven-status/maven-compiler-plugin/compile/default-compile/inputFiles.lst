@@ -1,3 +1,6 @@
+/workspaces/word-based-sentiment-scoring-and-trend-analysis-on-texts-cloudonauts/src/main/java/com/example/LemmaFrequencyReducer.java
+/workspaces/word-based-sentiment-scoring-and-trend-analysis-on-texts-cloudonauts/src/main/java/com/example/driver/LemmaFrequencyDriver.java
 /workspaces/word-based-sentiment-scoring-and-trend-analysis-on-texts-cloudonauts/src/main/java/com/example/PreprocessReducer.java
+/workspaces/word-based-sentiment-scoring-and-trend-analysis-on-texts-cloudonauts/src/main/java/com/example/LemmaFrequencyMapper.java
 /workspaces/word-based-sentiment-scoring-and-trend-analysis-on-texts-cloudonauts/src/main/java/com/example/driver/Driver.java
 /workspaces/word-based-sentiment-scoring-and-trend-analysis-on-texts-cloudonauts/src/main/java/com/example/PreprocessMapper.java

@@ -1,3 +1,7 @@
-com/example/task1/PreprocessReducer.class
+com/example/driver/LemmaFrequencyDriver.class
+com/example/LemmaFrequencyMapper.class
+com/example/LemmaFrequencyMapper$LemmaKey.class
 com/example/task1/PreprocessMapper.class
+com/example/LemmaFrequencyReducer.class
+com/example/task1/PreprocessReducer.class
 com/example/task1/Driver.class
