@@ -3,6 +3,7 @@ com/example/TrendAnalysisMapper$TrendKey.class
 com/example/LemmaFrequencyMapper.class
 com/example/SentimentScoreReducer.class
 com/example/TrendAnalysisMapper.class
+com/example/hive/udf/BigramUDF.class
 com/example/driver/LemmaFrequencyDriver.class
 com/example/LemmaFrequencyMapper$LemmaKey.class
 com/example/task1/PreprocessMapper.class

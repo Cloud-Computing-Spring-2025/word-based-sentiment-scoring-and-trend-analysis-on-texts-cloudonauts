@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.project</groupId>
+  <groupId>com.example</groupId>
   <artifactId>DataCleaningMapReduce</artifactId>
   <name>Data Cleaning using Hadoop MapReduce</name>
   <version>1.0.0</version>
@@ -36,7 +36,7 @@
             <configuration>
               <filters>
                 <filter>
-                  <artifact>*:*</artifact>
+                  <artifact>:</artifact>
                   <excludes>
                     <exclude>module-info.class</exclude>
                   </excludes>
@@ -72,10 +72,6 @@
           <groupId>org.apache.hadoop</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>hadoop-hdfs</artifactId>
-          <groupId>org.apache.hadoop</groupId>
-        </exclusion>
-        <exclusion>
           <artifactId>hadoop-mapreduce-client-app</artifactId>
           <groupId>org.apache.hadoop</groupId>
         </exclusion>
@@ -85,10 +81,6 @@
         </exclusion>
         <exclusion>
           <artifactId>hadoop-mapreduce-client-hs</artifactId>
-          <groupId>org.apache.hadoop</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>hadoop-yarn-server-web-proxy</artifactId>
           <groupId>org.apache.hadoop</groupId>
         </exclusion>
       </exclusions>
@@ -104,6 +96,12 @@
           <groupId>org.hamcrest</groupId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hive</groupId>
+      <artifactId>hive-exec</artifactId>
+      <version>3.1.2</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
   <properties>
