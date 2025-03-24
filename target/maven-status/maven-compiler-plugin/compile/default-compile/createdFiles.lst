@@ -1,6 +1,9 @@
-com/example/task2/WordFrequencyReducer.class
+com/example/task3/SentimentMapper.class
 com/example/Task1/PreprocessingDriver.class
+com/example/task3/SentimentReducer.class
+com/example/task3/SentimentScoringDriver.class
+com/example/task2/WordFrequencyReducer.class
 com/example/Task1/PreprocessingMapper.class
-com/example/Task1/PreprocessingReducer.class
 com/example/task2/WordFrequencyMapper.class
 com/example/task2/WordFrequencyDriver.class
+com/example/Task1/PreprocessingReducer.class
