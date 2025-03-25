@@ -14,8 +14,230 @@ In this project, you will analyze sentiment trends in historical literature by p
 ## Task 1: Preprocessing MapReduce Job
 
 ## Task 2: Word Frequency Analysis with Lemmatization
+### 1. **Start the Hadoop Cluster**
+
+Run the following command to start the Hadoop cluster:
+
+```bash
+docker compose up -d
+```
+
+### 2. **Build the Code**
+
+Build the code using Maven:
+
+```bash
+mvn clean install
+```
+
+### 3. **Open Docker Container**
+
+```bash
+docker exec -it resourcemanager /bin/bash
+```
+
+And create a directory,
+
+```bash
+mkdir -p /opt/hadoop-3.2.1/share/hadoop/mapreduce/
+```
+
+### 4. **Copy JAR to Docker Container**
+
+Copy the JAR file to the Hadoop ResourceManager container:
+
+```bash
+docker cp target/DataCleaningMapReduce-1.0.0.jar resourcemanager:/opt/hadoop-3.2.1/share/hadoop/mapreduce
+```
+
+### 5. **Move Dataset to Docker Container**
+
+Copy the dataset to the Hadoop ResourceManager container:
+
+```bash
+docker cp output/part-r-00000 resourcemanager:/opt/hadoop-3.2.1/share/hadoop/mapreduce/
+```
+
+### 6. **Connect to Docker Container**
+
+Access the Hadoop ResourceManager container:
+
+```bash
+docker exec -it resourcemanager /bin/bash
+```
+
+Navigate to the Hadoop directory:
+
+```bash
+cd /opt/hadoop-3.2.1/share/hadoop/mapreduce/
+```
+
+### 7. **Set Up HDFS**
+
+Create a folder in HDFS for the input dataset:
+
+```bash
+hadoop fs -mkdir -p /input/dataset
+```
+
+Copy the input dataset to the HDFS folder:
+
+```bash
+hadoop fs -put part-r-00000 /input/dataset
+```
+
+### 8. **Execute the MapReduce Job**
+
+Run your MapReduce job using the following command:
+
+```bash
+hadoop jar /opt/hadoop-3.2.1/share/hadoop/mapreduce/DataCleaningMapReduce-1.0.0.jar com.example.task2.WordFrequencyDriver /input/dataset/part-r-00000 /output_task2
+```
+
+### 9. **View the Output**
+
+To view the output of your MapReduce job, use:
+
+```bash
+hadoop fs -cat /output_task2/*
+```
+
+### 10. **Copy Output from HDFS to Local OS**
+
+To copy the output from HDFS to your local machine:
+
+1. Use the following command to copy from HDFS:
+    ```bash
+    hdfs dfs -get /output_task2 /opt/hadoop-3.2.1/share/hadoop/mapreduce/
+    ```
+
+2. use Docker to copy from the container to your local machine:
+   ```bash
+   exit 
+   ```
+    ```bash
+    docker cp resourcemanager:/opt/hadoop-3.2.1/share/hadoop/mapreduce/output_task2/ output/Task2/
+    ```
+3. Commit and push to your repo so that we can able to see your output
 
 ## Task 3: Sentiment Scoring
+### 1. **Start the Hadoop Cluster**
+
+Run the following command to start the Hadoop cluster:
+
+```bash
+docker compose up -d
+```
+
+### 2. **Build the Code**
+
+Build the code using Maven:
+
+```bash
+mvn clean install
+```
+
+### 3. **Open Docker Container**
+
+```bash
+docker exec -it resourcemanager /bin/bash
+```
+
+And create a directory,
+
+```bash
+mkdir -p /opt/hadoop-3.2.1/share/hadoop/mapreduce/
+```
+
+### 4. **Copy JAR to Docker Container**
+
+Copy the JAR file to the Hadoop ResourceManager container:
+
+```bash
+docker cp target/DataCleaningMapReduce-1.0.0.jar resourcemanager:/opt/hadoop-3.2.1/share/hadoop/mapreduce
+```
+
+### 5. **Move Dataset to Docker Container**
+
+Copy the dataset to the Hadoop ResourceManager container:
+
+```bash
+docker cp output/Task2/part-r-00000 resourcemanager:/opt/hadoop-3.2.1/share/hadoop/mapreduce/
+```
+### 6. **Move AFINN-111.txt to Docker Container**
+
+Copy the AFINN-111.txt to the Hadoop ResourceManager container:
+
+```bash
+docker cp input/AFIN-111.txt resourcemanager:/opt/hadoop-3.2.1/share/hadoop/mapreduce/
+```
+
+### 7. **Connect to Docker Container**
+
+Access the Hadoop ResourceManager container:
+
+```bash
+docker exec -it resourcemanager /bin/bash
+```
+
+Navigate to the Hadoop directory:
+
+```bash
+cd /opt/hadoop-3.2.1/share/hadoop/mapreduce/
+```
+
+### 8. **Set Up HDFS**
+
+Create a folder in HDFS for the input dataset:
+
+```bash
+hadoop fs -mkdir -p /input/dataset
+```
+
+Copy the input dataset to the HDFS folder:
+
+```bash
+hadoop fs -put part-r-00000 /input/dataset
+```
+Copy the AFINN-111.txt to the HDFS folder:
+
+```bash
+hadoop fs -put AFINN-111.txt /input/dataset
+```
+
+### 9. **Execute the MapReduce Job**
+
+Run your MapReduce job using the following command:
+
+```bash
+hadoop jar /opt/hadoop-3.2.1/share/hadoop/mapreduce/DataCleaningMapReduce-1.0.0.jar com.example.task3.SentimentScoringDriver /input/dataset/part-r-00000 /output_task3 /input/dataset/AFINN-111.txt
+```
+
+### 10. **View the Output**
+
+To view the output of your MapReduce job, use:
+
+```bash
+hadoop fs -cat /output_task3/*
+```
+
+### 11. **Copy Output from HDFS to Local OS**
+
+To copy the output from HDFS to your local machine:
+
+1. Use the following command to copy from HDFS:
+    ```bash
+    hdfs dfs -get /output_task3 /opt/hadoop-3.2.1/share/hadoop/mapreduce/
+    ```
+
+2. use Docker to copy from the container to your local machine:
+   ```bash
+   exit 
+   ```
+    ```bash
+    docker cp resourcemanager:/opt/hadoop-3.2.1/share/hadoop/mapreduce/output_task3/ output/Task3/
+    ```
+3. Commit and push to your repo so that we can able to see your output
 
 ## Task 4: Trend Analysis & Aggregation
 
