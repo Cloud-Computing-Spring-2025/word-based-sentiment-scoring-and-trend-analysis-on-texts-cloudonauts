@@ -13,6 +13,10 @@ In this project, you will analyze sentiment trends in historical literature by p
 
 ## Task 1: Preprocessing MapReduce Job
 
+## Task 2: Word Frequency Analysis with Lemmatization
+
+## Task 3: Sentiment Scoring
+
 ## Task 4: Trend Analysis & Aggregation
 
 ### 1. **Start the Hadoop Cluster**
