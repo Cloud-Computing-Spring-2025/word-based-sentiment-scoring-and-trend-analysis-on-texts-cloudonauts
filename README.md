@@ -60,7 +60,7 @@ docker cp target/DataCleaningMapReduce-1.0.0.jar resourcemanager:/opt/hadoop-3.2
 Copy the dataset to the Hadoop ResourceManager container:
 
 ```bash
-docker cp output/Task23part-r-00000 resourcemanager:/opt/hadoop-3.2.1/share/hadoop/mapreduce/
+docker cp output/Task3/part-r-00000 resourcemanager:/opt/hadoop-3.2.1/share/hadoop/mapreduce/
 ```
 
 ### 6. **Connect to Docker Container**
@@ -96,7 +96,7 @@ hadoop fs -put part-r-00000 /input/dataset
 Run your MapReduce job using the following command:
 
 ```bash
-hadoop jar /opt/hadoop-3.2.1/share/hadoop/mapreduce/DataCleaningMapReduce-1.0.0.jar com.example.task3.TrendDriver /input/dataset/part-r-00000 /output_task4
+hadoop jar /opt/hadoop-3.2.1/share/hadoop/mapreduce/DataCleaningMapReduce-1.0.0.jar com.example.task4.TrendDriver /input/dataset/part-r-00000 /output_task4
 ```
 
 ### 9. **View the Output**
