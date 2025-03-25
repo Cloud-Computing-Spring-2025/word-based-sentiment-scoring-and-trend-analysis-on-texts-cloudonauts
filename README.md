@@ -430,6 +430,29 @@ CREATE TEMPORARY FUNCTION extract_bigrams AS 'com.example.hive.udf.BigramUDF';
 
 ### 1. Extracting Top 50 Bigrams (Overall)
 
+```sql
+SELECT bigram, COUNT(*) AS total_frequency
+FROM lemmatized_books
+LATERAL VIEW explode(extract_bigrams(text)) exploded_table AS bigram
+    WHERE
+      split(bigram, ' ')[0] NOT IN (
+        'the','and','a','of','in','is','to','that','with','as','on','for','by','at',
+        'from','was','are','this','but','his','her','who','which','what','all','no',
+        'he','she','it','you','i','we','said','do','does','did','be','been','being',
+        'have','has','had','s'
+      )
+      AND
+      split(bigram, ' ')[1] NOT IN (
+        'the','and','a','of','in','is','to','that','with','as','on','for','by','at',
+        'from','was','are','this','but','his','her','who','which','what','all','no',
+        'he','she','it','you','i','we','said','do','does','did','be','been','being',
+        'have','has','had','s'
+      )
+GROUP BY bigram
+ORDER BY total_frequency DESC
+LIMIT 50;
+```
+
 We ran a query to:
 - Call the UDF using `LATERAL VIEW explode(...)`
 - Filter out bigrams where either word was a stopword (like “the”, “and”, “is”)
@@ -437,6 +460,38 @@ We ran a query to:
 - Return the top 50 most frequent bigrams across all books
 
 ### 2. Top 5 Bigrams per Book (Grouped)
+
+```sql
+INSERT OVERWRITE DIRECTORY '/user/hive/output/top_bigrams_per_book'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+SELECT book_id, bigram, frequency
+FROM (
+  SELECT book_id, bigram, frequency, ROW_NUMBER() OVER (PARTITION BY book_id ORDER BY frequency DESC) AS rank
+  FROM (
+    SELECT book_id, bigram, COUNT(*) AS frequency
+    FROM (
+      SELECT book_id, explode(extract_bigrams(text)) AS bigram
+      FROM lemmatized_books
+    ) raw
+        WHERE
+      split(bigram, ' ')[0] NOT IN (
+        'the','and','a','of','in','is','to','that','with','as','on','for','by','at',
+        'from','was','are','this','but','his','her','who','which','what','all','no',
+        'he','she','it','you','i','we','said','do','does','did','be','been','being',
+        'have','has','had','s'
+      )
+      AND
+      split(bigram, ' ')[1] NOT IN (
+        'the','and','a','of','in','is','to','that','with','as','on','for','by','at',
+        'from','was','are','this','but','his','her','who','which','what','all','no',
+        'he','she','it','you','i','we','said','do','does','did','be','been','being',
+        'have','has','had','s'
+      )
+    GROUP BY book_id, bigram
+  ) grouped
+) ranked
+WHERE rank <= 5;
+```
 
 To prevent one large book from dominating the results, we used the `ROW_NUMBER()` window function:
 - After grouping by `book_id` and `bigram`, we sorted by frequency
@@ -446,6 +501,49 @@ To prevent one large book from dominating the results, we used the `ROW_NUMBER()
 This helped show what themes or repeated expressions appeared most prominently in each individual book.
 
 ### 3. Top 5 Bigrams per Decade (Grouped)
+
+```sql
+INSERT OVERWRITE DIRECTORY '/user/hive/output/top_bigrams_per_decade'
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\t'
+SELECT decade, bigram, frequency
+FROM (
+  SELECT
+    decade,
+    bigram,
+    frequency,
+    ROW_NUMBER() OVER (PARTITION BY decade ORDER BY frequency DESC) AS rank
+  FROM (
+    SELECT
+      decade,
+      bigram,
+      COUNT(*) AS frequency
+    FROM (
+      SELECT
+        CONCAT(FLOOR(year / 10) * 10, 's') AS decade,
+        exploded_table.bigram AS bigram
+      FROM lemmatized_books
+      LATERAL VIEW explode(extract_bigrams(text)) exploded_table AS bigram
+    ) raw_bigrams
+    WHERE
+      split(bigram, ' ')[0] NOT IN (
+        'the','and','a','of','in','is','to','that','with','as','on','for','by','at',
+        'from','was','are','this','but','his','her','who','which','what','all','no',
+        'he','she','it','you','i','we','said','do','does','did','be','been','being',
+        'have','has','had','s'
+      )
+      AND
+      split(bigram, ' ')[1] NOT IN (
+        'the','and','a','of','in','is','to','that','with','as','on','for','by','at',
+        'from','was','are','this','but','his','her','who','which','what','all','no',
+        'he','she','it','you','i','we','said','do','does','did','be','been','being',
+        'have','has','had','s'
+      )
+    GROUP BY decade, bigram
+  ) ranked
+) final
+WHERE rank <= 5;
+```
 
 Similarly, we computed the top 5 bigrams for each **decade**:
 - We converted `year` to a `decade` (e.g., 1850 → 1850s)
